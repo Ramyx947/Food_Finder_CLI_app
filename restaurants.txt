@@ -1,0 +1,4 @@
+chipole	mexican	20	spicy food
+Clapamania	Mixed	35	loud music
+Zumm-zumm	Chinese	0	not a clue
+Won-tong	Japanese	20	pork belly
