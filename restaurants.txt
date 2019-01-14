@@ -1,7 +1,8 @@
-clapamania	Mixed	35	loud music
-zumm-zumm	Chinese	0	not a clue
-won-tong	Japanese	20	pork belly
-gormiza	Greek	49	olive oil
-chipole	     mexican	20	spicy food
-memei	chinese	78	soft shell crab
-kung pho	thai	40	pho
+Barbur	Indian Curry	30	black dhal
+lyle's	bitish	150	Lasagna
+Barcelona Tapas	Spanish	160	tapas
+Desperados Grill	Spanish	56	eat as much as you can
+The Greenhouse	french	1092	luxurious meals
+The clove club	british	1000	fish and chips
+st john	british	100	delish chicken wings
+estrella bar	portuguese	12	tapas

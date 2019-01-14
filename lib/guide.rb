@@ -29,8 +29,8 @@ class Guide
         introduction 
         result = nil
         until result == :quit 
-            action = get_action
-            result = do_action(action)
+            action, args = get_action
+            result = do_action(action, args)
         end 
         conclusion 
     end
@@ -38,21 +38,23 @@ class Guide
         action = nil
         # Loop through keep asking for user input until we get a valid action
         until Guide::Config.actions.include?(action)
-            puts "Actions: " + Guide::Config.actions.join(", ") if action
+            puts "Actions: " + Guide::Config.actions.join(", ") 
             print "> "
             user_response = gets.chomp
-            action = user_response.downcase.strip
+            args = user_response.downcase.strip.split(' ')
+            action = args.shift
         end
-        return action   
+        return action, args
     end
 
 
-    def do_action(action)
+    def do_action(action, args=[])
         case action
         when 'list'
-            list
+            list(args)
         when 'find'
-            puts "Finding ..."
+            keyword = args.shift
+            find(keyword)
         when 'add'
             add
         when 'quit'
@@ -77,15 +79,46 @@ class Guide
         end
     end
 
-    def list
+    def list(args=[])
+        sort_order = args.shift 
+        sort_order = args.shift if sort_order == 'by'
+        sort_order = "name" unless ['name', 'cuisine', 'price'].include?(sort_order)
+
         output_header("Listing restaurants")
+
         restaurants = Restaurant.saved_restaurants
-        # restaurants.each do |r|
-        #     puts  r.name + " | " +  r.cuisine + " | " +  r.formatted_price + " | " + r.best_known_for
-        # end
+        #sort the restaurants array
+         restaurants.sort! do |r1,r2|
+            case sort_order
+            when 'name'
+                r1.name.downcase <=> r2.name.downcase
+            when 'cuisine'
+                r1.cuisine.downcase <=> r2.cuisine.downcase
+            when 'price'
+                r1.price.to_i <=> r2.price.to_i
+            end
+        end
         output_restaurant_table(restaurants)
+        puts "Sort using: 'list cuisine' or 'list by cuisine'\n\n"
     end
 
+    def find(keyword="")
+       output_header("Find a restaurant") 
+        if keyword
+            #search method
+            restaurants = Restaurant.saved_restaurants 
+            found = restaurants.select do |r|
+                r.name.downcase.include?(keyword.downcase) ||
+                r.cuisine.downcase.include?(keyword.downcase) ||
+                r.best_known_for.downcase.include?(keyword.downcase) ||
+                r.price.to_i <= keyword.to_i 
+            end
+            output_restaurant_table(found)
+        else
+            puts "Find using a key phrase to search the restaurant list."
+            puts "Examples: 'find Memei', 'find Chinese', 'find chin'\n\n"
+        end
+    end
     def introduction
         puts "<<<<<<<  Welcome to the Food Finder!  >>>>>>>"
         puts "This is an interactive guide to help you find the food you crave."
@@ -95,23 +128,23 @@ class Guide
     end
     private
     def output_header(text)
-        puts "\n#{text.upcase.center(80)}\n\n"
+        puts "\n#{text.upcase.center(75)}\n\n"
     end
 
     def output_restaurant_table(restaurants=[])
-        print " " + "Name".ljust(15)
+        print " " + "Name".ljust(20)
         print " " + "Cuisine".ljust(15)
         print " " + "Best known for".ljust(25)
         print " " + "Price".rjust(6) + "\n"
-        puts "-" * 70
+        puts "-" * 75
         restaurants.each do |r|
-            line = " " << r.name.titleize.ljust(15)
+            line = " " << r.name.titleize.ljust(20)
             line << " " + r.cuisine.titleize.ljust(15)
             line << " " + r.best_known_for.titleize.ljust(25)
             line << " " + r.formatted_price.rjust(6)
             puts line
         end
         puts "No listings found" if restaurants.empty?
-        puts "-" * 70
+        puts "-" * 75
     end
 end
