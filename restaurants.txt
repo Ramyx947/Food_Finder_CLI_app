@@ -1,4 +1,7 @@
-chipole	mexican	20	spicy food
-Clapamania	Mixed	35	loud music
-Zumm-zumm	Chinese	0	not a clue
-Won-tong	Japanese	20	pork belly
+clapamania	Mixed	35	loud music
+zumm-zumm	Chinese	0	not a clue
+won-tong	Japanese	20	pork belly
+gormiza	Greek	49	olive oil
+chipole	     mexican	20	spicy food
+memei	chinese	78	soft shell crab
+kung pho	thai	40	pho

@@ -1,4 +1,5 @@
 require 'restaurant'
+require './support/string_extend'
 
 class Guide
     class Config 
@@ -63,23 +64,26 @@ class Guide
     
     # adding a restaurant instance  
     def add
-        puts "\n\n\nAdd a restaurant\n\n".upcase
+        output_header("Add a restaurant")
     
         restaurant = Restaurant.build_from_questions
 
         if restaurant.save
-            puts "\nRestaurant Added\n\n"
+            # puts "\nRestaurant Added\n\n"
+            output_header("Restaurant Added")
         else
-            puts "\nSave Error: Restaurant Not Added\n\n"
+            # puts "\nSave Error: Restaurant Not Added\n\n"
+            output_header("Save Error: Restaurant Not Added")
         end
     end
 
     def list
-        puts "\n\n\nRestaurants List\n\n".upcase
+        output_header("Listing restaurants")
         restaurants = Restaurant.saved_restaurants
-        restaurants.each do |r|
-            puts  r.name + " | " +  r.cuisine + " | " +  r.price + " | " + r.best_known_for
-        end
+        # restaurants.each do |r|
+        #     puts  r.name + " | " +  r.cuisine + " | " +  r.formatted_price + " | " + r.best_known_for
+        # end
+        output_restaurant_table(restaurants)
     end
 
     def introduction
@@ -88,5 +92,26 @@ class Guide
     end
     def conclusion
         puts "<<<<<<<< Goodbye and Bon Appetit! >>>>>>>"
+    end
+    private
+    def output_header(text)
+        puts "\n#{text.upcase.center(80)}\n\n"
+    end
+
+    def output_restaurant_table(restaurants=[])
+        print " " + "Name".ljust(15)
+        print " " + "Cuisine".ljust(15)
+        print " " + "Best known for".ljust(25)
+        print " " + "Price".rjust(6) + "\n"
+        puts "-" * 70
+        restaurants.each do |r|
+            line = " " << r.name.titleize.ljust(15)
+            line << " " + r.cuisine.titleize.ljust(15)
+            line << " " + r.best_known_for.titleize.ljust(25)
+            line << " " + r.formatted_price.rjust(6)
+            puts line
+        end
+        puts "No listings found" if restaurants.empty?
+        puts "-" * 70
     end
 end

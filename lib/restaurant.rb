@@ -1,5 +1,11 @@
+require './support/number_helper.rb'
+
 class Restaurant
+
+    include NumberHelper
+
     @@filepath = nil
+
     attr_accessor :name, :cuisine, :price, :best_known_for
 
     def initialize(args={})
@@ -66,10 +72,10 @@ class Restaurant
 
         args = {}
         print "Restaurant name:"
-        args[:name] = gets.chomp.strip.capitalize
+        args[:name] = gets.chomp.strip
 
         print "Restaurant type:"
-        args[:cuisine] = gets.chomp.strip.capitalize
+        args[:cuisine] = gets.chomp.strip
 
         print "Restaurant price:"
         args[:price] = gets.chomp.strip.to_i
@@ -80,8 +86,6 @@ class Restaurant
         return self.new(args)
     end
 
-    
-
     def save
         return false unless Restaurant.file_usable?
         File.open(@@filepath, 'a') do |file|
@@ -89,4 +93,8 @@ class Restaurant
         end
         return true
     end 
+
+    def formatted_price
+        number_to_currency(@price)
+    end
 end 
