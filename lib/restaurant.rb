@@ -40,9 +40,28 @@ class Restaurant
     end
 
     def self.saved_restaurants
-        # read the restaurant file
-        # return instances of restaurant :name, cuise, price
+        # open a restaurant file
+        #  if the file is readable append the restaurant list 
+        # create a blank restaurant line and then populate it from import_line
+        # return instances of restaurant :name, cuise, price   
+        @restaurants = []
+        if file_usable?
+            file = File.new(@@filepath, 'r')
+            file.each_line do |line|
+                @restaurants << Restaurant.new.import_line(line.chomp)
+                end
+            file.close
+        end
+        return @restaurants
     end
+
+    # create an empty instance and then populate it
+    def import_line(line)
+        line_array =line.split("\t")
+        @name, @cuisine, @price, @best_known_for = line_array
+        return self
+    end
+
     def self.build_from_questions
 
         args = {}
@@ -60,6 +79,8 @@ class Restaurant
 
         return self.new(args)
     end
+
+    
 
     def save
         return false unless Restaurant.file_usable?
