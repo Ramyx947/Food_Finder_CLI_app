@@ -1,7 +1,13 @@
-require_relative './spec_helper.rb'
+require 'spec_helper'
 
-describe "restaurant" do
-    it "expects restaurant to know about self"
+describe Restaurant do
 
-    
+    it "has a name, cuisine, best known for and price" do
+        restaurant = Restaurant.new(" ")
+        restaurant.name = " "
+        restaurant.cuisine = " "
+        restaurant.best_known_for = " "
+        restaurant.price = " "
+    end
+        
 end
